@@ -521,7 +521,11 @@ fn collect_data_for_field_gen(field: Field, out: &Output) -> FieldTokens {
 
     let inner_type = type_name(&field.field_type).to_camel_case();
 
-    let description = field.description.clone();
+    // remove the comment lines
+    let description = field
+        .description
+        .clone()
+        .map(|d| d.lines().filter(|line| !line.starts_with("#")).collect());
 
     let attributes = field
         .description
